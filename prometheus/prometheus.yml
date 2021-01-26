@@ -1,14 +1,21 @@
 global:
-  scrape_interval:     15s 
+  scrape_interval:     3s
 
   external_labels:
-    monitor: 'codelab-monitor'
+      monitor: 'example-app'
+
+rule_files:
 
 scrape_configs:
-
   - job_name: 'prometheus'
-
-    scrape_interval: 5s
 
     static_configs:
       - targets: ['localhost:9090']
+
+  - job_name: 'efficient_metrics'
+
+    dns_sd_configs:
+      - names: ['app']
+        port: 5000
+        type: A
+        refresh_interval: 5s

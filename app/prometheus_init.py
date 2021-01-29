@@ -24,20 +24,69 @@ def first_route():
     return request.args.get('status')
 
 
-@app.route('/two')
-def the_second():
+@app.route('/db_timing')
+@metrics.counter(
+    'db_timing', 'SLA timings', labels={
+        'query': lambda: request.args.get('query'),
+        'time': lambda: request.args.get('time'),
+        'sla_time': lambda: request.args.get('sla_time'),
+    })
+def the_five():
     time.sleep(random.random() * 0.4)
     return 'ok'
 
 
-@app.route('/three')
-def test_3rd():
+@app.route('/db_error')
+@metrics.counter(
+    'db_error', 'SLA errors', labels={
+        'query': lambda: request.args.get('query'),
+        'time': lambda: request.args.get('time'),
+        'code': lambda: request.args.get('code'),
+    })
+def test_six():
     time.sleep(random.random() * 0.6)
     return 'ok'
 
 
-@app.route('/four')
-def fourth_one():
+@app.route('/drop_url')
+@metrics.counter(
+    'drop_url', 'RPS drop', labels={
+        'url': lambda: request.args.get('url')
+    })
+def seven_one():
+    time.sleep(random.random() * 0.8)
+    return 'ok'
+
+
+@app.route('/cpu')
+@metrics.counter(
+    'cpu', 'cpu', labels={
+        'value': lambda: request.args.get('cpu'),
+        'available': lambda: request.args.get('available')
+    })
+def eight():
+    time.sleep(random.random() * 0.8)
+    return 'ok'
+
+
+@app.route('/ram')
+@metrics.counter(
+    'ram', 'ram', labels={
+        'value': lambda: request.args.get('cpu'),
+        'available': lambda: request.args.get('available')
+    })
+def nine_one():
+    time.sleep(random.random() * 0.8)
+    return 'ok'
+
+
+@app.route('/net')
+@metrics.counter(
+    'net', 'net', labels={
+        'value': lambda: request.args.get('cpu'),
+        'available': lambda: request.args.get('available')
+    })
+def ten_one():
     time.sleep(random.random() * 0.8)
     return 'ok'
 

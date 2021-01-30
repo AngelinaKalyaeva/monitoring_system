@@ -24,6 +24,18 @@ def first_route():
     return request.args.get('status')
 
 
+@app.route('/url_error')
+@metrics.counter(
+    'url_error', 'SLA error', labels={
+        'service_id': lambda: request.args.get('service_id'),
+        'url': lambda: request.args.get('url'),
+        'code': lambda: request.args.get('code'),
+    })
+def the_fiveqwe():
+    time.sleep(random.random() * 0.4)
+    return 'ok'
+
+
 @app.route('/db_timing')
 @metrics.counter(
     'db_timing', 'SLA timings', labels={

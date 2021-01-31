@@ -2,102 +2,93 @@ import time
 import random
 
 from flask import Flask, request
-from prometheus_flask_exporter import PrometheusMetrics
+from prometheus_client import Gauge
+from prometheus_client import Counter
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from prometheus_client import make_wsgi_app
 
 
 app = Flask(__name__)
-metrics = PrometheusMetrics(app, group_by='endpoint')
-
-
-endpoints = ('one', 'two', 'three', 'four', 'five', 'error')
+# metrics = PrometheusMetrics(app, group_by='endpoint')
+url_time_g = Gauge('url_time', 'Description of gauge', ['service_id', 'url'])
+sla_time_g = Gauge('sla_time', 'Description of gauge', ['service_id', 'url'])
+payment_system_error_g = Counter('payment_error', 'Payment information', ['service_id', 'status', 'type'])
+url_error_g = Counter('url_error', 'SLA error', ['service_id', 'url', 'code'])
 
 
 @app.route('/payment_system_error')
-@metrics.counter(
-    'payment_error', 'Payment information', labels={
-        'service_id': lambda: request.args.get('service_id'),
-        'status': lambda: request.args.get('status'),
-        'type': lambda: request.args.get('type')
-    })
-def first_route():
+def a():
     time.sleep(random.random() * 0.2)
+    payment_system_error_g.labels(
+        request.args.get('service_id'),
+        request.args.get('status'),
+        request.args.get('type')
+    ).inc()
     return request.args.get('status')
 
 
 @app.route('/url_error')
-@metrics.counter(
-    'url_error', 'SLA error', labels={
-        'service_id': lambda: request.args.get('service_id'),
-        'url': lambda: request.args.get('url'),
-        'code': lambda: request.args.get('code'),
-    })
-def the_fiveqwe():
+def b():
     time.sleep(random.random() * 0.4)
-    return 'ok'
+    url_error_g.labels(
+        request.args.get('service_id'),
+        request.args.get('url'),
+        request.args.get('code')
+    ).inc()
+    return request.args.get('code')
+
+
+@app.route('/sla_timing')
+def c():
+    time.sleep(random.random() * 0.4)
+    sla_time_g.labels(
+        request.args.get('service_id'),
+        request.args.get('url')
+    ).set(request.args.get('sla_time'))
+    return request.args.get('sla_time')
+
+
+@app.route('/url_timing')
+def d():
+    time.sleep(random.random() * 0.4)
+    url_time_g.labels(
+        request.args.get('service_id'),
+        request.args.get('url')
+    ).set(request.args.get('url_time'))
+    return request.args.get('url_time')
 
 
 @app.route('/db_timing')
-@metrics.counter(
-    'db_timing', 'SLA timings', labels={
-        'query': lambda: request.args.get('query'),
-        'time': lambda: request.args.get('time'),
-        'sla_time': lambda: request.args.get('sla_time'),
-    })
 def the_five():
     time.sleep(random.random() * 0.4)
     return 'ok'
 
 
 @app.route('/db_error')
-@metrics.counter(
-    'db_error', 'SLA errors', labels={
-        'query': lambda: request.args.get('query'),
-        'time': lambda: request.args.get('time'),
-        'code': lambda: request.args.get('code'),
-    })
 def test_six():
     time.sleep(random.random() * 0.6)
     return 'ok'
 
 
 @app.route('/drop_url')
-@metrics.counter(
-    'drop_url', 'RPS drop', labels={
-        'url': lambda: request.args.get('url')
-    })
 def seven_one():
     time.sleep(random.random() * 0.8)
     return 'ok'
 
 
 @app.route('/cpu')
-@metrics.counter(
-    'cpu', 'cpu', labels={
-        'value': lambda: request.args.get('cpu'),
-        'available': lambda: request.args.get('available')
-    })
 def eight():
     time.sleep(random.random() * 0.8)
     return 'ok'
 
 
 @app.route('/ram')
-@metrics.counter(
-    'ram', 'ram', labels={
-        'value': lambda: request.args.get('cpu'),
-        'available': lambda: request.args.get('available')
-    })
 def nine_one():
     time.sleep(random.random() * 0.8)
     return 'ok'
 
 
 @app.route('/net')
-@metrics.counter(
-    'net', 'net', labels={
-        'value': lambda: request.args.get('cpu'),
-        'available': lambda: request.args.get('available')
-    })
 def ten_one():
     time.sleep(random.random() * 0.8)
     return 'ok'
@@ -109,4 +100,8 @@ def oops():
 
 
 if __name__ == '__main__':
+    app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
+        '/metrics': make_wsgi_app()
+    })
+
     app.run('0.0.0.0', 5000, threaded=True)

@@ -1,0 +1,28 @@
+# The Root Query for the application
+type Query {
+  getPaymentByCode(code: String!) : Payment
+}
+
+# The Root Mutation for the application
+type Mutation {
+  writePaymentSystemMetric(serviceId: String!, code: String!, type: String!) : Metrics
+}
+
+type Metrics {
+  service: Service!
+}
+
+type Service {
+  id: Int!
+  datetime: Int!
+  efficiency: Efficiency!
+}
+
+type Efficiency {
+  payment: Payment!
+}
+
+type Payment {
+  code: String!
+  type: String!
+}

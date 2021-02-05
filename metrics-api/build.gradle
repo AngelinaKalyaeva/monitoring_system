@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.0.4.RELEASE'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group 'org.metrics.api'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //Common
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
+    //Graph QL API
+    implementation 'com.graphql-java:graphql-java-tools:5.2.4'
+    implementation 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
+    implementation 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
+
+    //Spring
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    //Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

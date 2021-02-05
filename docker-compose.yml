@@ -9,6 +9,12 @@ services:
     ports:
       - 5000:5000
 
+  # dumb, random load generator
+  generator:
+    build:
+      context: generator
+    stop_signal: SIGKILL
+
   prometheus:
     build: ./prometheus/
     ports:

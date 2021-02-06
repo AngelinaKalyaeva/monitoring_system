@@ -2,10 +2,10 @@ package org.metrics.api.model;
 
 public class Service {
     private String id;
-    private Integer datetime;
+    private Long datetime;
     private Efficiency efficiency;
 
-    public Service(String id, Integer datetime, Efficiency efficiency) {
+    public Service(String id, Long datetime, Efficiency efficiency) {
         this.id = id;
         this.datetime = datetime;
         this.efficiency = efficiency;
@@ -19,11 +19,11 @@ public class Service {
         this.id = id;
     }
 
-    public Integer getDatetime() {
+    public Long getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(Integer datetime) {
+    public void setDatetime(Long datetime) {
         this.datetime = datetime;
     }
 

@@ -16,45 +16,10 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 1,
-  "iteration": 1612188718495,
+  "iteration": 1612630043448,
   "links": [],
   "panels": [
     {
-      "alert": {
-        "alertRuleTags": {},
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                0.9
-              ],
-              "type": "gt"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "A",
-                "10s",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "last"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "for": "5m",
-        "frequency": "1m",
-        "handler": 1,
-        "name": "Payment monitor alert",
-        "noDataState": "no_data",
-        "notifications": []
-      },
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -102,22 +67,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(payment_error_total{job=\"efficient_metrics\", status=\"200\"}[1m]))/sum(rate(payment_error_total{job=\"efficient_metrics\"}[1m]))",
+          "expr": "sum(rate(payment_error_total{status=\"200\"}[$payment_interval]))/sum(rate(payment_error_total[$payment_interval]))",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
           "refId": "A"
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "gt",
-          "value": 0.9
-        }
-      ],
+      "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
@@ -281,6 +238,11 @@
             "value": "1m"
           },
           {
+            "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
             "selected": true,
             "text": "10m",
             "value": "10m"
@@ -326,7 +288,7 @@
             "value": "30d"
           }
         ],
-        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "query": "1m,5m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
         "queryValue": "",
         "refresh": 2,
         "skipUrlSync": false,
@@ -406,12 +368,12 @@
     ]
   },
   "time": {
-    "from": "2021-02-01T14:09:32.234Z",
-    "to": "2021-02-01T14:43:17.159Z"
+    "from": "now-5m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Monitoring system dashboard",
   "uid": "EQbyAdLGz",
-  "version": 15
+  "version": 3
 }

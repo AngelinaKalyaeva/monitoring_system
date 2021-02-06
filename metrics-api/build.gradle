@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'com.bmuschko.docker-remote-api' version '4.8.0'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -10,6 +11,11 @@ group 'org.metrics.api'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
+
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
+
+def dockerBuildDir = 'build/docker/'
 
 repositories {
     mavenCentral()
@@ -32,4 +38,21 @@ dependencies {
     //Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+bootJar {
+    manifest {
+        attributes 'Start-Class': 'org.metrics.api.MetricsApiApplication'
+    }
+}
+
+task createDockerfile(type: Dockerfile) {
+    destFile = project.file("$dockerBuildDir/Dockerfile")
+    from 'openjdk:11-jdk-slim'
+    copyFile jar.archiveName, '/build/libs/metrics-api.jar'
+    entryPoint 'java'
+    defaultCommand '-jar', '/app/metrics-api.jar'
+    exposePort 8080
+    runCommand 'apk --update --no-cache add curl'
+    instruction 'HEALTHCHECK CMD curl -f http://localhost:8080/actuator/health || exit 1'
 }

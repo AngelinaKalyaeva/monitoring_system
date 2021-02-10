@@ -22,4 +22,13 @@ public class EfficientMetricsService {
                 "type", metrics.getService().getEfficiency().getPayment().getType()
         ).increment();
     }
+
+    public void writeSlaError(Metrics metrics) {
+        meterRegistry.counter(
+                "url_error",
+                "service_id", metrics.getService().getId(),
+                "url", metrics.getService().getEfficiency().getSla().getUrl(),
+                "code", metrics.getService().getEfficiency().getSla().getError().getCode()
+        ).increment();
+    }
 }

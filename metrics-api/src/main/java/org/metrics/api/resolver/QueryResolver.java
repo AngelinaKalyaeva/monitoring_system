@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class QueryResolver implements GraphQLQueryResolver {
     public Payment getPaymentByCode(String code) {
-        return new Payment(code, "visa");
+        return Payment.builder().code(code).type("visa").build();
     }
 }

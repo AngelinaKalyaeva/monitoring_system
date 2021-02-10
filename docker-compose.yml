@@ -19,12 +19,12 @@ services:
       - grafana
 
   # random load generator
-  generator:
-    build:
-      context: generator
-    stop_signal: SIGKILL
-    links:
-      - metrics-api
+  # generator:
+  #   build:
+  #     context: generator
+  #   stop_signal: SIGKILL
+  #   links:
+  #     - metrics-api
 
   prometheus:
     build: ./prometheus/

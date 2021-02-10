@@ -10,6 +10,7 @@ docker run -it --rm --link clickhouse-server:clickhouse-server yandex/clickhouse
 
 
 пример запроса к GraphQL:
+ошибки платежной системы:
 mutation {
   writePaymentSystemMetric(serviceId: "10", code: "200", type: "visa") {
   	service {
@@ -20,5 +21,21 @@ mutation {
         }
       }
     }
+  }
+}
+процент ошибок обращения к url:
+mutation {
+  writeSlaError(serviceId: "10", url: "/bye", code: "500", ) {
+  	service {
+      id
+      efficiency {
+        sla {
+          url
+          error {
+            code
+          }
+        }
+      }
+    }  
   }
 }

@@ -6,23 +6,34 @@ type Query {
 # The Root Mutation for the application
 type Mutation {
   writePaymentSystemMetric(serviceId: String!, code: String!, type: String!) : Metrics
+  writeSlaError(serviceId: String!, url: String!, code: String!): Metrics
 }
 
 type Metrics {
-  service: Service!
+  service: Service
 }
 
 type Service {
-  id: Int!
-  datetime: Int!
-  efficiency: Efficiency!
+  id: Int
+  datetime: Int
+  efficiency: Efficiency
 }
 
 type Efficiency {
-  payment: Payment!
+  payment: Payment
+  sla: Sla
 }
 
 type Payment {
-  code: String!
-  type: String!
+  code: String
+  type: String
+}
+
+type Sla {
+  url: String
+  error: Error
+}
+
+type Error {
+  code: String
 }

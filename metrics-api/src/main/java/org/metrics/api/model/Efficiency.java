@@ -1,17 +1,11 @@
 package org.metrics.api.model;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
 public class Efficiency {
     private Payment payment;
-
-    public Efficiency(Payment payment) {
-        this.payment = payment;
-    }
-
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
+    private Sla sla;
 }

@@ -1,17 +1,10 @@
 package org.metrics.api.model;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
 public class Metrics {
     private Service service;
-
-    public Metrics(Service service) {
-        this.service = service;
-    }
-
-    public Service getService() {
-        return service;
-    }
-
-    public void setService(Service service) {
-        this.service = service;
-    }
 }

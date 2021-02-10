@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 1,
-  "iteration": 1612630043448,
+  "iteration": 1612981369230,
   "links": [],
   "panels": [
     {
@@ -163,7 +163,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (service_id, url) (url_error_total{job=\"efficient_metrics\",code=\"200\"} offset [[url_error_time]])/sum by (service_id, url) (url_error_total{job=\"efficient_metrics\"} offset [[url_error_time]])",
+          "expr": "sum by (service_id, url)(rate(url_error_total{code=\"200\"}[$url_error_time]))/sum by (service_id, url)(rate(url_error_total[$url_error_time]))",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -300,8 +300,8 @@
         "auto_min": "10s",
         "current": {
           "selected": false,
-          "text": "1m",
-          "value": "1m"
+          "text": "10m",
+          "value": "10m"
         },
         "error": null,
         "hide": 0,
@@ -309,12 +309,17 @@
         "name": "url_error_time",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "1m",
             "value": "1m"
           },
           {
             "selected": false,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": true,
             "text": "10m",
             "value": "10m"
           },
@@ -359,7 +364,7 @@
             "value": "30d"
           }
         ],
-        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "query": "1m,5m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
         "queryValue": "",
         "refresh": 2,
         "skipUrlSync": false,
@@ -375,5 +380,5 @@
   "timezone": "",
   "title": "Monitoring system dashboard",
   "uid": "EQbyAdLGz",
-  "version": 3
+  "version": 5
 }

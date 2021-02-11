@@ -1,8 +1,13 @@
 package org.metrics.api.resolver;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
-import org.metrics.api.model.*;
+import org.metrics.api.model.Efficiency;
 import org.metrics.api.model.Error;
+import org.metrics.api.model.Metrics;
+import org.metrics.api.model.Payment;
+import org.metrics.api.model.Service;
+import org.metrics.api.model.Sla;
+import org.metrics.api.model.Timing;
 import org.metrics.api.service.EfficientMetricsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -59,6 +64,31 @@ public class MutationResolver implements GraphQLMutationResolver {
                 ).build();
 
         efficientMetricsService.writeSlaError(metrics);
+        return metrics;
+    }
+
+    public Metrics writeSlaTiming(String serviceId, String url, Integer time, Integer slaTime) {
+        Metrics metrics = Metrics.builder()
+                .service(
+                        Service.builder()
+                                .id(serviceId)
+                                .datetime(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                                .efficiency(
+                                        Efficiency.builder()
+                                                .sla(
+                                                        Sla.builder()
+                                                                .url(url)
+                                                                .timing(
+                                                                        Timing.builder()
+                                                                                .time(time)
+                                                                                .slaTime(slaTime)
+                                                                                .build()
+                                                                ).build()
+                                                ).build()
+                                ).build()
+                ).build();
+
+        efficientMetricsService.writeSlaTiming(metrics);
         return metrics;
     }
 }

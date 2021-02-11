@@ -7,6 +7,7 @@ type Query {
 type Mutation {
   writePaymentSystemMetric(serviceId: String!, code: String!, type: String!) : Metrics
   writeSlaError(serviceId: String!, url: String!, code: String!): Metrics
+  writeSlaTiming(serviceId: String!, url: String!, time: Int, slaTime: Int): Metrics
 }
 
 type Metrics {
@@ -32,8 +33,14 @@ type Payment {
 type Sla {
   url: String
   error: Error
+  timing: Timing
 }
 
 type Error {
   code: String
+}
+
+type Timing {
+  time: Int
+  slaTime: Int
 }

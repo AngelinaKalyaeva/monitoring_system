@@ -8,4 +8,5 @@ import lombok.Data;
 public class Sla {
     private String url;
     private Error error;
+    private Timing timing;
 }

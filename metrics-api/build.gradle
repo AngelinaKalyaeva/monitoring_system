@@ -24,6 +24,7 @@ repositories {
 dependencies {
     //Common
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 
     //Micrometer
     compile('org.springframework.boot:spring-boot-starter-web')

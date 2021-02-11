@@ -1,6 +1,7 @@
 package org.metrics.api.resolver;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import lombok.Data;
 import org.metrics.api.model.Efficiency;
 import org.metrics.api.model.Error;
 import org.metrics.api.model.Metrics;
@@ -8,21 +9,18 @@ import org.metrics.api.model.Payment;
 import org.metrics.api.model.Service;
 import org.metrics.api.model.Sla;
 import org.metrics.api.model.Timing;
+import org.metrics.api.service.AnaliticsMetricsService;
 import org.metrics.api.service.EfficientMetricsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+@Data
 @Component
 public class MutationResolver implements GraphQLMutationResolver {
     private final EfficientMetricsService efficientMetricsService;
-
-    @Autowired
-    public MutationResolver(EfficientMetricsService efficientMetricsService) {
-        this.efficientMetricsService = efficientMetricsService;
-    }
+    private final AnaliticsMetricsService analiticsMetricsService;
 
     public Metrics writePaymentSystemMetric(String serviceId, String code, String type) {
         Metrics metrics = Metrics.builder()
@@ -90,5 +88,10 @@ public class MutationResolver implements GraphQLMutationResolver {
 
         efficientMetricsService.writeSlaTiming(metrics);
         return metrics;
+    }
+
+    public Metrics writeAnalitics(String serviceId) {
+        analiticsMetricsService.pingClickhouse();
+        return Metrics.builder().service(Service.builder().id(serviceId).build()).build();
     }
 }

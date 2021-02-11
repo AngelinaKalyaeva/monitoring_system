@@ -18,18 +18,15 @@ services:
     links:
       - grafana
 
-  # random load generator
-  # generator:
-  #   build:
-  #     context: generator
-  #   stop_signal: SIGKILL
-  #   links:
-  #     - metrics-api
-
   prometheus:
     build: ./prometheus/
     ports:
       - "9090:9090"
+
+  clickhouse:
+    build: ./clickhouse/
+    ports:
+      - "8123:8123"
 
   grafana:
     build: ./grafana

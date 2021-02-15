@@ -39,3 +39,17 @@ mutation {
     }  
   }
 }
+почещяемость:
+mutation {
+  writeAttendancy(serviceId: "10", url: "/hello", count:25) {
+    service {
+      analytics {
+        attendance {
+          url
+          count
+          time
+        }
+      }
+    }
+  }
+}

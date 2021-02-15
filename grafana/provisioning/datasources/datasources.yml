@@ -5,3 +5,8 @@ datasources:
     type: prometheus
     access: proxy
     url: http://prometheus:9090
+
+  - name: Clickhouse
+    type: vertamedia-clickhouse-datasource
+    access: proxy
+    url: http://clickhouse:8123

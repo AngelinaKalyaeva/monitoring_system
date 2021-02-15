@@ -9,4 +9,5 @@ public class Service {
     private String id;
     private Long datetime;
     private Efficiency efficiency;
+    private Analytics analytics;
 }

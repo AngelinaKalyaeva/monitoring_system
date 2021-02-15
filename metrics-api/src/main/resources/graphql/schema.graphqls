@@ -8,7 +8,7 @@ type Mutation {
   writePaymentSystemMetric(serviceId: String!, code: String!, type: String!) : Metrics
   writeSlaError(serviceId: String!, url: String!, code: String!): Metrics
   writeSlaTiming(serviceId: String!, url: String!, time: Int, slaTime: Int): Metrics
-  writeAnalitics(serviceId: String!) : Metrics
+  writeAttendancy(serviceId: String!, url: String!, count: Int!) : Metrics
 }
 
 type Metrics {
@@ -19,11 +19,22 @@ type Service {
   id: Int
   datetime: Int
   efficiency: Efficiency
+  analytics: Analytics
+}
+
+type Analytics {
+  attendance: Attendance
 }
 
 type Efficiency {
   payment: Payment
   sla: Sla
+}
+
+type Attendance {
+  url: String
+  count: Int
+  time: Int
 }
 
 type Payment {

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class AnaliticsMetricsService {
     private final ClickhouseClient clickhouseClient;
 
-    public void pingClickhouse() {
-        clickhouseClient.pingClickHouse();
+    public void writeAttendancyMetrics(String serviceId, String url, Integer count) {
+        clickhouseClient.writeAttendancyMetrics(serviceId, url, count);
     }
 }

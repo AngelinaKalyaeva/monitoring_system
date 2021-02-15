@@ -2,19 +2,16 @@ package org.metrics.api.resolver;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import lombok.Data;
-import org.metrics.api.model.Efficiency;
+import org.metrics.api.model.*;
 import org.metrics.api.model.Error;
-import org.metrics.api.model.Metrics;
-import org.metrics.api.model.Payment;
-import org.metrics.api.model.Service;
-import org.metrics.api.model.Sla;
-import org.metrics.api.model.Timing;
 import org.metrics.api.service.AnaliticsMetricsService;
 import org.metrics.api.service.EfficientMetricsService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+
+import static java.time.ZoneOffset.*;
 
 @Data
 @Component
@@ -28,7 +25,7 @@ public class MutationResolver implements GraphQLMutationResolver {
                         Service.builder()
                                 .id(serviceId)
                                 .datetime(
-                                        LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+                                        LocalDateTime.now().toEpochSecond(UTC)
                                 ).efficiency(
                                 Efficiency.builder()
                                         .payment(
@@ -46,7 +43,7 @@ public class MutationResolver implements GraphQLMutationResolver {
                 .service(
                         Service.builder()
                                 .id(serviceId)
-                                .datetime(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                                .datetime(LocalDateTime.now().toEpochSecond(UTC))
                                 .efficiency(
                                         Efficiency.builder()
                                                   .sla(
@@ -70,7 +67,7 @@ public class MutationResolver implements GraphQLMutationResolver {
                 .service(
                         Service.builder()
                                 .id(serviceId)
-                                .datetime(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+                                .datetime(LocalDateTime.now().toEpochSecond(UTC))
                                 .efficiency(
                                         Efficiency.builder()
                                                 .sla(
@@ -90,8 +87,18 @@ public class MutationResolver implements GraphQLMutationResolver {
         return metrics;
     }
 
-    public Metrics writeAnalitics(String serviceId) {
-        analiticsMetricsService.pingClickhouse();
-        return Metrics.builder().service(Service.builder().id(serviceId).build()).build();
+    public Metrics writeAttendancy(String serviceId, String url, Integer count) {
+        analiticsMetricsService.writeAttendancyMetrics(serviceId, url, count);
+        return Metrics.builder().service(
+                Service.builder().id(serviceId).analytics(
+                        Analytics.builder().attendance(
+                                Attendance.builder()
+                                        .url(url)
+                                        .count(count)
+                                        .time(LocalDateTime.now().toEpochSecond(UTC))
+                                        .build()
+                        ).build()
+                ).build()
+        ).build();
     }
 }

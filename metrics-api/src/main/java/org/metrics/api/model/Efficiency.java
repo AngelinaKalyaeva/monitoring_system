@@ -8,4 +8,5 @@ import lombok.Data;
 public class Efficiency {
     private Payment payment;
     private Sla sla;
+    private Database database;
 }

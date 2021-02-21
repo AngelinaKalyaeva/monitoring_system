@@ -8,7 +8,11 @@ type Mutation {
   writePaymentSystemMetric(serviceId: String!, code: String!, type: String!) : Metrics
   writeSlaError(serviceId: String!, url: String!, code: String!): Metrics
   writeSlaTiming(serviceId: String!, url: String!, time: Int, slaTime: Int): Metrics
+  writeDatabaseError(serviceId: String!, query: String!, code: String!): Metrics
+  writeDatabaseTiming(serviceId: String!, query: String!, time: Int, slaTime: Int): Metrics
   writeAttendancy(serviceId: String!, url: String!, count: Int!) : Metrics
+  writeSaleDynamic(serviceId: String!, saleCount: Int!, returnCount: Int!, cost: Int!) : Metrics
+  writeProductDynamic(serviceId: String!, productId: String!, salesCount: Int!) : Metrics
 }
 
 type Metrics {
@@ -24,17 +28,38 @@ type Service {
 
 type Analytics {
   attendance: Attendance
+  dynamic: Dynamic
 }
 
 type Efficiency {
   payment: Payment
   sla: Sla
+  database: Database
+}
+
+type Dynamic {
+  sale: Sale
+  product: Product
+}
+
+type Sale {
+  cost: Int
+  saleCount: Int
+  returnCount: Int
+}
+
+type Product {
+  id: String
+  popularity: Popularity
+}
+
+type Popularity {
+  salesCount: Int
 }
 
 type Attendance {
   url: String
   count: Int
-  time: Int
 }
 
 type Payment {
@@ -44,6 +69,12 @@ type Payment {
 
 type Sla {
   url: String
+  error: Error
+  timing: Timing
+}
+
+type Database {
+  query: String
   error: Error
   timing: Timing
 }

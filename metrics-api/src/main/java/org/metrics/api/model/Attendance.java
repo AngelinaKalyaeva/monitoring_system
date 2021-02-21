@@ -8,5 +8,4 @@ import lombok.Data;
 public class Attendance {
     private String url;
     private Integer count;
-    private Long time;
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Analytics {
-    private Attendance attendance;
-    private Dynamic dynamic;
+public class Dynamic {
+    Sale sale;
+    Product product;
 }

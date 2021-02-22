@@ -46,7 +46,7 @@ public class EfficientMetricsService {
                 "database_error",
                 "service_id", metrics.getService().getId(),
                 "query", metrics.getService().getEfficiency().getDatabase().getQuery(),
-                "code", metrics.getService().getEfficiency().getSla().getError().getCode()
+                "code", metrics.getService().getEfficiency().getDatabase().getError().getCode()
         ).increment();
     }
 
@@ -76,7 +76,7 @@ public class EfficientMetricsService {
         String query = metrics.getService().getEfficiency().getDatabase().getQuery();
         if (slaTime != null) {
             this.databaseSlaTime.getTime().put(query, slaTime.doubleValue());
-            Gauge.builder("database_sla_time", this.slaTime, el -> el.getTime().get(query)).tags(
+            Gauge.builder("database_sla_time", this.databaseSlaTime, el -> el.getTime().get(query)).tags(
                     "service_id", metrics.getService().getId(),
                     "query", query
             ).register(meterRegistry);
@@ -85,7 +85,7 @@ public class EfficientMetricsService {
         Integer time = metrics.getService().getEfficiency().getDatabase().getTiming().getTime();
         if (time != null) {
             this.databaseTime.getTime().put(query, time.doubleValue());
-            Gauge.builder("database_time", this.time, el -> el.getTime().get(query)).tags(
+            Gauge.builder("database_time", this.databaseTime, el -> el.getTime().get(query)).tags(
                     "service_id", metrics.getService().getId(),
                     "query", query
             ).register(meterRegistry);

@@ -24,4 +24,4 @@ CREATE TABLE IF NOT EXISTS analytics_metrics.product_dynamic (
 INSERT INTO analytics_metrics.attendance VALUES ('10', '/hello', 1, 1613423448);
 INSERT INTO analytics_metrics.dynamic_sale VALUES ('10', 100, 1, 0, 1613423448);
 INSERT INTO analytics_metrics.dynamic_sale VALUES ('10', 500, 0, 1, 1613423448);
-INSERT INTO analytics_metrics.dynamic_sale VALUES ('10', '1000', 10, 1613423448);
+INSERT INTO analytics_metrics.product_dynamic VALUES ('10', '1000', 10, 1613423448);

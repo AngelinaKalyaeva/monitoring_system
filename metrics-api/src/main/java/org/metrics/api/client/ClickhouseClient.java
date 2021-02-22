@@ -11,7 +11,7 @@ import java.time.ZoneOffset;
 @Data
 @Component
 public class ClickhouseClient {
-    private final String CLICKHOUSE_BASE_URL = "http://192.168.99.101:8123?query=";
+    private final String CLICKHOUSE_BASE_URL = "http://clickhouse:8123?query=";
     private final RestTemplate restTemplate;
 
     private final String ATTENDANCE_METRICS_QUERY =
@@ -29,7 +29,7 @@ public class ClickhouseClient {
                                 "'".concat(serviceId).concat("'"),
                                 "'".concat(url).concat("'"),
                                 count.toString(),
-                                LocalDateTime.now().toEpochSecond(ZoneOffset.of("+03:00"))
+                                LocalDateTime.now().toEpochSecond(ZoneOffset.of("+00:00"))
                         )
                 ),
                 "",
@@ -41,12 +41,12 @@ public class ClickhouseClient {
         restTemplate.postForObject(
                 CLICKHOUSE_BASE_URL.concat(
                         String.format(
-                                ATTENDANCE_METRICS_QUERY,
+                                DYNAMIC_SALE_METRICS_QUERY,
                                 "'".concat(serviceId).concat("'"),
                                 cost,
                                 saleCount,
                                 returnCount,
-                                LocalDateTime.now().toEpochSecond(ZoneOffset.of("+03:00"))
+                                LocalDateTime.now().toEpochSecond(ZoneOffset.of("+00:00"))
                         )
                 ),
                 "",
@@ -62,7 +62,7 @@ public class ClickhouseClient {
                                 "'".concat(metrics.getService().getId()).concat("'"),
                                 metrics.getService().getAnalytics().getDynamic().getProduct().getId(),
                                 metrics.getService().getAnalytics().getDynamic().getProduct().getPopularity().getSalesCount(),
-                                LocalDateTime.now().toEpochSecond(ZoneOffset.of("+03:00"))
+                                LocalDateTime.now().toEpochSecond(ZoneOffset.of("+00:00"))
                         )
                 ),
                 "",

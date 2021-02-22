@@ -6,6 +6,7 @@ attendency_count_response=("25" "30" "40" "15" "10" "25" "31" "29" "17" "19")
 sale_count_response=("2" "3" "4" "1" "10" "5" "1" "9" "17" "19")
 sale_cost_response=("1000" "1500" "100" "10" "2000" "15000" "170" "935" "120" "1200")
 url=("/hello" "/bye")
+query=("SELECT * FROM products" "INSERT INTO products")
 
 while true
 do
@@ -34,4 +35,16 @@ do
 	rand_time=${url_time_response[$RANDOM % 10]}
 	echo "SlaTimingMetric gone..."
 	curl 'http://192.168.99.102:8080/graphql' -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'DNT: 1' -H 'Origin: file://' --data-binary '{"query":"mutation { writeSlaTiming(serviceId: \"10\", url: \"'"${rand_url}"'\", time: '"${rand_time}"', slaTime: 500) { service { id efficiency { sla { url timing { time slaTime } } } } } }"}' --compressed
+	
+	echo "DatabaseSlaErrorMetric gone..."
+	rand_url=${query[$RANDOM % 2]}
+	curl 'http://192.168.99.102:8080/graphql' -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'DNT: 1' -H 'Origin: file://' --data-binary '{"query":"mutation { writeDatabaseError(serviceId: \"10\", query: \"'"${rand_url}"'\", code: \"'"${rand_code}"'\", ) { service { id efficiency { database { query error { code } } } } } }"}' --compressed
+	rand_url=${query[$RANDOM % 2]}
+	rand_time=${url_time_response[$RANDOM % 10]}
+	echo "DatabaseSlaTimingMetric gone..."
+	curl 'http://192.168.99.102:8080/graphql' -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'DNT: 1' -H 'Origin: file://' --data-binary '{"query":"mutation { writeDatabaseTiming(serviceId: \"10\", query: \"'"${rand_url}"'\", time: '"${rand_time}"', slaTime: 500) { service { id efficiency { database { query timing { time slaTime } } } } } }"}' --compressed
+	rand_url=${query[$RANDOM % 2]}
+	rand_time=${url_time_response[$RANDOM % 10]}
+	echo "DatabaseSlaTimingMetric gone..."
+	curl 'http://192.168.99.102:8080/graphql' -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'DNT: 1' -H 'Origin: file://' --data-binary '{"query":"mutation { writeDatabaseTiming(serviceId: \"10\", query: \"'"${rand_url}"'\", time: '"${rand_time}"', slaTime: 500) { service { id efficiency { database { query timing { time slaTime } } } } } }"}' --compressed
 done

@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 1,
-  "iteration": 1615560273127,
+  "iteration": 1615561240215,
   "links": [],
   "panels": [
     {
@@ -213,7 +213,11 @@
         "message": "Посещаемость интернет-магазина упала!",
         "name": "Посещаемость интернет-магазина alert",
         "noDataState": "no_data",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "lr-TSP8Mz"
+          }
+        ]
       },
       "aliasColors": {},
       "bars": false,
@@ -371,9 +375,14 @@
         "for": "5m",
         "frequency": "1m",
         "handler": 1,
+        "message": "Динамика продаж.",
         "name": "Динамика продаж alert",
         "noDataState": "no_data",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "lr-TSP8Mz"
+          }
+        ]
       },
       "aliasColors": {},
       "bars": false,
@@ -526,9 +535,14 @@
         "for": "5m",
         "frequency": "1m",
         "handler": 1,
+        "message": "Процент успешных платежей",
         "name": "Процент успешных платежей alert",
         "noDataState": "no_data",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "lr-TSP8Mz"
+          }
+        ]
       },
       "aliasColors": {
         "sum(rate(payment_error_total{status=\"200\"}[5m]))/sum(rate(payment_error_total[5m]))": "light-blue",
@@ -675,9 +689,14 @@
         "for": "5m",
         "frequency": "1m",
         "handler": 1,
+        "message": "Процент успешных обращений по URL",
         "name": "Процент успешных обращений по URL alert",
         "noDataState": "no_data",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "lr-TSP8Mz"
+          }
+        ]
       },
       "aliasColors": {},
       "bars": false,
@@ -918,9 +937,14 @@
         "for": "5m",
         "frequency": "1m",
         "handler": 1,
+        "message": "Процент успешного выполнение SLA",
         "name": "Процент успешного выполнение SLA  alert",
         "noDataState": "no_data",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "lr-TSP8Mz"
+          }
+        ]
       },
       "aliasColors": {},
       "bars": false,
@@ -1060,9 +1084,14 @@
         "for": "5m",
         "frequency": "1m",
         "handler": 1,
+        "message": "Процент успешных обращений к базе данных",
         "name": "Процент успешных обращений к базе данных alert",
         "noDataState": "no_data",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "lr-TSP8Mz"
+          }
+        ]
       },
       "aliasColors": {},
       "bars": false,
@@ -1202,9 +1231,14 @@
         "for": "5m",
         "frequency": "1m",
         "handler": 1,
+        "message": "Процент успешного выполнения SLA в базе данных",
         "name": "Процент успешного выполнения SLA в базе данных alert",
         "noDataState": "no_data",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "lr-TSP8Mz"
+          }
+        ]
       },
       "aliasColors": {
         "{instance=\"metrics-api:8080\", job=\"metrics-api\", query=\"SELECT * FROM products\", service_id=\"10\"}": "light-blue"
@@ -1864,5 +1898,5 @@
   "timezone": "",
   "title": "Monitoring system dashboard",
   "uid": "EQbyAdLGz",
-  "version": 22
+  "version": 27
 }

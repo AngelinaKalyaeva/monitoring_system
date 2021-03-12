@@ -19,7 +19,7 @@ public class ClickhouseClient {
     private final String DYNAMIC_SALE_METRICS_QUERY =
             "INSERT INTO analytics_metrics.dynamic_sale VALUES (%s, %s, %s, %s, %s);";
     private final String PRODUCT_DYNAMIC_METRICS_QUERY =
-            "INSERT INTO analytics_metrics.dynamic_sale VALUES (%s, %s, %s, %s);";
+            "INSERT INTO analytics_metrics.product_dynamic VALUES (%s, %s, %s, %s);";
 
     public void writeAttendancyMetrics(String serviceId, String url, Integer count) {
         restTemplate.postForObject(

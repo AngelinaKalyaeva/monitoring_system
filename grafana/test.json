@@ -16,11 +16,12 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 1,
-  "iteration": 1613984727321,
+  "iteration": 1615560273127,
   "links": [],
   "panels": [
     {
       "datasource": "Clickhouse",
+      "description": "Изменение суммы среднего чека покупок за день на текущий момент.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -89,18 +90,19 @@
           "tableLoading": false
         }
       ],
-      "title": "average check",
+      "title": "Средний чек",
       "type": "stat"
     },
     {
       "datasource": "Clickhouse",
+      "description": "График показывает изменение среднего чека по дням.",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
-            "axisLabel": "",
+            "axisLabel": "Рубли",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
@@ -120,6 +122,7 @@
             "showPoints": "never",
             "spanNulls": true
           },
+          "displayName": "Средний чек",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -172,22 +175,61 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Average check graph",
+      "title": "Изменение среднего чека за день",
       "type": "timeseries"
     },
     {
+      "alert": {
+        "alertRuleTags": {},
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                10
+              ],
+              "type": "lt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "min"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "1m",
+        "frequency": "5s",
+        "handler": 1,
+        "message": "Посещаемость интернет-магазина упала!",
+        "name": "Посещаемость интернет-магазина alert",
+        "noDataState": "no_data",
+        "notifications": []
+      },
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Clickhouse",
+      "description": "Количество посетителей интернет-магазина за единицу времени (количество запросов в секунду).",
       "fieldConfig": {
         "defaults": {
           "custom": {},
+          "displayName": "Количество посетителей",
           "thresholds": {
             "mode": "absolute",
             "steps": []
-          }
+          },
+          "unit": "none"
         },
         "overrides": []
       },
@@ -247,11 +289,20 @@
           "tableLoading": false
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "lt",
+          "value": 10,
+          "visible": true
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Attendance Metrics",
+      "title": "Посещаемость интернет-магазина",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -267,7 +318,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "none",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -289,14 +340,51 @@
       }
     },
     {
+      "alert": {
+        "alertRuleTags": {},
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                5
+              ],
+              "type": "lt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "min"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "5m",
+        "frequency": "1m",
+        "handler": 1,
+        "name": "Динамика продаж alert",
+        "noDataState": "no_data",
+        "notifications": []
+      },
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Clickhouse",
+      "description": "Количество продаж в единицу времени",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "displayName": "Количество продаж"
         },
         "overrides": []
       },
@@ -356,11 +444,20 @@
           "tableLoading": false
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "lt",
+          "value": 5,
+          "visible": true
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Sale Dynamic",
+      "title": "Динамика продаж",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -398,16 +495,55 @@
       }
     },
     {
+      "alert": {
+        "alertRuleTags": {},
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                0.9
+              ],
+              "type": "lt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "min"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "5m",
+        "frequency": "1m",
+        "handler": 1,
+        "name": "Процент успешных платежей alert",
+        "noDataState": "no_data",
+        "notifications": []
+      },
       "aliasColors": {
-        "sum(rate(payment_error_total{status=\"200\"}[5m]))/sum(rate(payment_error_total[5m]))": "light-blue"
+        "sum(rate(payment_error_total{status=\"200\"}[5m]))/sum(rate(payment_error_total[5m]))": "light-blue",
+        "Процент успешных платежей": "semi-dark-blue"
       },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "description": "Отношение успешных платежей к общему количеству платежей за единицу времени",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "displayName": "Процент успешных платежей",
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -447,7 +583,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(payment_error_total{status=\"200\"}[$payment_interval]))/sum(rate(payment_error_total[$payment_interval]))",
+          "expr": "sum(rate(payment_error_total{status=\"200\"}[5m]))/sum(rate(payment_error_total[5m]))",
           "hide": false,
           "interval": "",
           "legendFormat": "",
@@ -455,11 +591,20 @@
           "refId": "A"
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "lt",
+          "value": 0.9,
+          "visible": true
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Payment monitor",
+      "title": "Процент успешных платежей",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -476,7 +621,7 @@
       "yaxes": [
         {
           "$$hashKey": "object:195",
-          "format": "short",
+          "format": "percentunit",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -499,14 +644,51 @@
       }
     },
     {
+      "alert": {
+        "alertRuleTags": {},
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                0.9
+              ],
+              "type": "lt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "min"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "5m",
+        "frequency": "1m",
+        "handler": 1,
+        "name": "Процент успешных обращений по URL alert",
+        "noDataState": "no_data",
+        "notifications": []
+      },
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "description": "Отношение успешный обращений к общему количеству обращений по различным URL.",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -546,18 +728,27 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (service_id, url)(rate(url_error_total{code=\"200\"}[$url_error_time]))/sum by (service_id, url)(rate(url_error_total[$url_error_time]))",
+          "expr": "sum by (service_id, url)(rate(url_error_total{code=\"200\"}[5m]))/sum by (service_id, url)(rate(url_error_total[5m]))",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
           "refId": "A"
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "lt",
+          "value": 0.9,
+          "visible": true
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "URL Error",
+      "title": "Процент успешных обращений по URL",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -573,7 +764,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "percentunit",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -603,9 +794,11 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "description": "Время обращения к URL",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -656,7 +849,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Url timing",
+      "title": "Время обращения к URL",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -672,7 +865,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "ms",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -694,14 +887,51 @@
       }
     },
     {
+      "alert": {
+        "alertRuleTags": {},
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                0.75
+              ],
+              "type": "lt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "min"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "5m",
+        "frequency": "1m",
+        "handler": 1,
+        "name": "Процент успешного выполнение SLA  alert",
+        "noDataState": "no_data",
+        "notifications": []
+      },
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "description": "SLA (service level agreement) - процентное отношение запросов, уложившихся во временные рамки к общему числу запросов",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -741,18 +971,27 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "1-((sum_over_time(sla_time[$url_sla_time]) - sum_over_time(url_time[$url_sla_time])) / sum_over_time(sla_time[$url_sla_time]))",
+          "expr": "1-((sum_over_time(sla_time[5m]) - sum_over_time(url_time[5m])) / sum_over_time(sla_time[5m]))",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
           "refId": "A"
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "lt",
+          "value": 0.75,
+          "visible": true
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Sla timing monitoring",
+      "title": "Процент успешного выполнение SLA ",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -768,7 +1007,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "percentunit",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -790,14 +1029,51 @@
       }
     },
     {
+      "alert": {
+        "alertRuleTags": {},
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                0.9
+              ],
+              "type": "lt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "min"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "5m",
+        "frequency": "1m",
+        "handler": 1,
+        "name": "Процент успешных обращений к базе данных alert",
+        "noDataState": "no_data",
+        "notifications": []
+      },
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "description": "Отношение успешных обращений к общему числу запросов",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -837,18 +1113,27 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (service_id, query)(rate(database_error_total{code=\"200\"}[$url_error_time]))/sum by (service_id, query)(rate(database_error_total[$url_error_time]))",
+          "expr": "sum by (service_id, query)(rate(database_error_total{code=\"200\"}[5m]))/sum by (service_id, query)(rate(database_error_total[5m]))",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
           "refId": "A"
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "lt",
+          "value": 0.9,
+          "visible": true
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Database error",
+      "title": "Процент успешных обращений к базе данных",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -864,7 +1149,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "percentunit",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -886,6 +1171,41 @@
       }
     },
     {
+      "alert": {
+        "alertRuleTags": {},
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                0.5
+              ],
+              "type": "lt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "min"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "5m",
+        "frequency": "1m",
+        "handler": 1,
+        "name": "Процент успешного выполнения SLA в базе данных alert",
+        "noDataState": "no_data",
+        "notifications": []
+      },
       "aliasColors": {
         "{instance=\"metrics-api:8080\", job=\"metrics-api\", query=\"SELECT * FROM products\", service_id=\"10\"}": "light-blue"
       },
@@ -893,9 +1213,11 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "description": "SLA(соглашение сервисного уровня) - отношение разницы во времени между согласованным и фактическим к фактическому времени выполнения всех запросов за промежуток времени.",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -935,18 +1257,27 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "1-((sum_over_time(database_sla_time[$url_sla_time]) - sum_over_time(database_time[$url_sla_time])) / sum_over_time(database_time[$url_sla_time]))",
+          "expr": "1-((sum_over_time(database_sla_time[5m]) - sum_over_time(database_time[5m])) / sum_over_time(database_time[5m]))",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
           "refId": "A"
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "lt",
+          "value": 0.5,
+          "visible": true
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Database sla timing",
+      "title": "Процент успешного выполнения SLA в базе данных",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -962,7 +1293,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "percentunit",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -994,7 +1325,8 @@
       "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -1045,7 +1377,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Database timing",
+      "title": "Время обращения к базе данных.",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1061,7 +1393,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "ms",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -1090,7 +1422,9 @@
       "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "displayName": "память",
+          "unit": "decbytes"
         },
         "overrides": []
       },
@@ -1141,7 +1475,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Memory Used",
+      "title": "Использование памяти",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1157,7 +1491,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "decbytes",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -1186,7 +1520,8 @@
       "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -1228,7 +1563,7 @@
         {
           "expr": "process_cpu_usage",
           "interval": "",
-          "legendFormat": "cpu",
+          "legendFormat": "Используемый",
           "queryType": "randomWalk",
           "refId": "A"
         },
@@ -1236,7 +1571,7 @@
           "expr": "system_cpu_count",
           "hide": false,
           "interval": "",
-          "legendFormat": "allocated",
+          "legendFormat": "Зарезервированный",
           "refId": "B"
         }
       ],
@@ -1244,7 +1579,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "CPU Usage",
+      "title": "Процент использования CPU.",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1260,7 +1595,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "percentunit",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -1529,5 +1864,5 @@
   "timezone": "",
   "title": "Monitoring system dashboard",
   "uid": "EQbyAdLGz",
-  "version": 30
+  "version": 22
 }

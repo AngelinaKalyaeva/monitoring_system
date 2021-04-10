@@ -60,7 +60,7 @@ public class ClickhouseClient {
                         String.format(
                                 PRODUCT_DYNAMIC_METRICS_QUERY,
                                 "'".concat(metrics.getService().getId()).concat("'"),
-                                metrics.getService().getAnalytics().getDynamic().getProduct().getId(),
+                                "'".concat(metrics.getService().getAnalytics().getDynamic().getProduct().getId()).concat("'"),
                                 metrics.getService().getAnalytics().getDynamic().getProduct().getPopularity().getSalesCount(),
                                 LocalDateTime.now().toEpochSecond(ZoneOffset.of("+00:00"))
                         )

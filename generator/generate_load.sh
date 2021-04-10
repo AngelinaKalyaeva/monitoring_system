@@ -4,6 +4,7 @@ code_response=("200" "200" "200" "200" "200" "200" "200" "200" "200" "500")
 url_time_response=("100" "121" "545" "19" "1000" "103" "110" "503" "111" "99")
 attendency_count_response=("25" "30" "40" "15" "10" "25" "31" "29" "17" "19")
 sale_count_response=("2" "3" "4" "1" "10" "5" "1" "9" "17" "19")
+product_id_response=("2" "2" "4" "4" "10" "5" "1" "4" "17" "19")
 sale_cost_response=("1000" "1500" "100" "10" "2000" "15000" "170" "935" "120" "1200")
 url=("/hello" "/bye")
 query=("SELECT * FROM products" "INSERT INTO products")
@@ -15,6 +16,7 @@ do
 	rand_time=${url_time_response[$RANDOM % 10]}
 	rand_attendency=${attendency_count_response[$RANDOM % 10]}
 	rand_sale_count=${sale_count_response[$RANDOM % 10]}
+	rand_product_id=${product_id_response[$RANDOM % 10]}
 	rand_sale_cost=${sale_cost_response[$RANDOM % 10]}
 	echo "${rand_code}"
 	echo "${rand_url}"
@@ -47,4 +49,6 @@ do
 	rand_time=${url_time_response[$RANDOM % 10]}
 	echo "DatabaseSlaTimingMetric gone..."
 	curl 'http://192.168.99.102:8080/graphql' -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'DNT: 1' -H 'Origin: file://' --data-binary '{"query":"mutation { writeDatabaseTiming(serviceId: \"10\", query: \"'"${rand_url}"'\", time: '"${rand_time}"', slaTime: 500) { service { id efficiency { database { query timing { time slaTime } } } } } }"}' --compressed
+	echo "Product populyarity gone..."
+	curl 'http://192.168.99.102:8080/graphql' -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'DNT: 1' -H 'Origin: file://' --data-binary '{"query":"mutation {\n  writeProductDynamic(serviceId: \"10\", productId: \"'"${rand_product_id}"'\", salesCount: 1) { service { id analytics { dynamic { product { id } } } } } }"}' --compressed
 done

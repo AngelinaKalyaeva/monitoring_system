@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 1,
-  "iteration": 1618071432515,
+  "iteration": 1620542363429,
   "links": [],
   "panels": [
     {
@@ -67,7 +67,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "database": "analytics_metrics",
@@ -94,6 +94,10 @@
       "type": "stat"
     },
     {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": "Clickhouse",
       "description": "График показывает изменение среднего чека по дням.",
       "fieldConfig": {
@@ -132,25 +136,40 @@
         },
         "overrides": []
       },
+      "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
         "y": 6
       },
+      "hiddenSeries": false,
       "id": 16,
-      "options": {
-        "graph": {},
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltipOptions": {
-          "mode": "single"
-        }
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
       },
-      "pluginVersion": "7.4.2",
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.7",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
       "targets": [
         {
           "database": "analytics_metrics",
@@ -173,10 +192,46 @@
           "tableLoading": false
         }
       ],
+      "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Изменение среднего чека за день",
-      "type": "timeseries"
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "datasource": "Clickhouse",
@@ -186,7 +241,7 @@
             "mode": "thresholds"
           },
           "custom": {
-            "align": null,
+            "align": "center",
             "filterable": false
           },
           "mappings": [],
@@ -223,7 +278,7 @@
           }
         ]
       },
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "dateTimeType": "DATETIME",
@@ -243,46 +298,6 @@
       "type": "table"
     },
     {
-      "alert": {
-        "alertRuleTags": {},
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                10
-              ],
-              "type": "lt"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "A",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "min"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "for": "1m",
-        "frequency": "5s",
-        "handler": 1,
-        "message": "Посещаемость интернет-магазина упала!",
-        "name": "Посещаемость интернет-магазина alert",
-        "noDataState": "no_data",
-        "notifications": [
-          {
-            "uid": "lr-TSP8Mz"
-          }
-        ]
-      },
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -327,7 +342,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -347,26 +362,36 @@
           "format": "time_series",
           "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
           "intervalFactor": 1,
-          "query": "SELECT timestamp, count FROM analytics_metrics.attendance ORDER BY timestamp",
-          "queryType": "randomWalk",
-          "rawQuery": "SELECT timestamp, count FROM analytics_metrics.attendance ORDER BY timestamp",
+          "query": "SELECT\n    $timeSeries as t,\n    count()\nFROM $table\n\nWHERE $timeFilter\n\nGROUP BY t\n\nORDER BY t\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(timestamp), 1) * 1) * 1000 as t,\n    count()\nFROM analytics_metrics.attendance\n\nWHERE timestamp >= toDateTime(1619116965) AND timestamp <= toDateTime(1619117424)\n\nGROUP BY t\n\nORDER BY t",
           "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "attendance",
+          "tableLoading": false
+        },
+        {
+          "database": "analytics_metrics",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "timestamp",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "hide": true,
+          "intervalFactor": 1,
+          "query": "SELECT \n  t, \n  (SELECT count1 FROM (SELECT\n    $timeSeries as t,\n    count() as count1 FROM $table WHERE timestamp >= timestamp_sub(SECOND, 11, toDateTime(now())) AND timestamp <= timestamp_sub(SECOND, 10, toDateTime(now())) GROUP BY t ORDER BY t DESC) ORDER BY count1 DESC LIMIT 1 ) - count\nFROM (SELECT $timeSeries as t, count() as count FROM $table GROUP BY t ORDER BY t)\n",
+          "rawQuery": "SELECT \n  t, \n  (SELECT count1 FROM (SELECT\n    (intDiv(toUInt32(timestamp), 1) * 1) * 1000 as t,\n    count() as count1 FROM analytics_metrics.attendance WHERE timestamp >= timestamp_sub(SECOND, 11, toDateTime(now())) AND timestamp <= timestamp_sub(SECOND, 10, toDateTime(now())) GROUP BY t ORDER BY t DESC) ORDER BY count1 DESC LIMIT 1 ) - count\nFROM (SELECT (intDiv(toUInt32(timestamp), 1) * 1) * 1000 as t, count() as count FROM analytics_metrics.attendance GROUP BY t ORDER BY t)",
+          "refId": "B",
           "round": "0s",
           "skip_comments": true,
           "table": "attendance",
           "tableLoading": false
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "lt",
-          "value": 10,
-          "visible": true
-        }
-      ],
+      "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
@@ -414,7 +439,7 @@
           {
             "evaluator": {
               "params": [
-                5
+                15
               ],
               "type": "lt"
             },
@@ -423,21 +448,21 @@
             },
             "query": {
               "params": [
-                "A",
-                "5m",
+                "C",
+                "10s",
                 "now"
               ]
             },
             "reducer": {
               "params": [],
-              "type": "min"
+              "type": "avg"
             },
             "type": "query"
           }
         ],
         "executionErrorState": "alerting",
-        "for": "5m",
-        "frequency": "1m",
+        "for": "5s",
+        "frequency": "1s",
         "handler": 1,
         "message": "Динамика продаж.",
         "name": "Динамика продаж alert",
@@ -456,8 +481,25 @@
       "description": "Количество продаж в единицу времени",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
-          "displayName": "Количество продаж"
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "displayName": "Количество продаж",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -487,7 +529,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -507,10 +549,49 @@
           "format": "time_series",
           "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
           "intervalFactor": 1,
-          "query": "SELECT timestamp, saleCount FROM analytics_metrics.dynamic_sale ORDER BY timestamp\n",
+          "query": "SELECT toStartOfInterval(timestamp, INTERVAL 10 second) as time, count() as count FROM analytics_metrics.dynamic_sale GROUP BY time ORDER BY time\n",
           "queryType": "randomWalk",
-          "rawQuery": "SELECT timestamp, saleCount FROM analytics_metrics.dynamic_sale ORDER BY timestamp",
+          "rawQuery": "SELECT toStartOfInterval(timestamp, INTERVAL 10 second) as time, count() as count FROM analytics_metrics.dynamic_sale GROUP BY time ORDER BY time",
           "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "dynamic_sale",
+          "tableLoading": false
+        },
+        {
+          "database": "analytics_metrics",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "timestamp",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT date_add(SECOND, 30, time) as t, count FROM (SELECT toDateTime(toStartOfInterval(timestamp, INTERVAL 10 second)) as time, count() as count FROM analytics_metrics.dynamic_sale WHERE time < date_sub(SECOND, 30, toDateTime(now())) GROUP BY time ORDER BY time)\n\n",
+          "rawQuery": "SELECT date_add(SECOND, 30, time) as t, count FROM (SELECT toDateTime(toStartOfInterval(timestamp, INTERVAL 10 second)) as time, count() as count FROM analytics_metrics.dynamic_sale WHERE time < date_sub(SECOND, 30, toDateTime(now())) GROUP BY time ORDER BY time)",
+          "refId": "B",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "attendance",
+          "tableLoading": false
+        },
+        {
+          "database": "analytics_metrics",
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "timestamp",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "hide": false,
+          "intervalFactor": 1,
+          "query": "SELECT \n  t, \n  (SELECT count1 FROM (SELECT\n    $timeSeries as t,\n    count() as count1 FROM analytics_metrics.dynamic_sale WHERE timestamp >= timestamp_sub(SECOND, 11, toDateTime(now())) AND timestamp <= timestamp_sub(SECOND, 10, toDateTime(now())) GROUP BY t ORDER BY t DESC) ORDER BY count1 DESC LIMIT 1 ) - count\nFROM (SELECT $timeSeries as t, count() as count FROM analytics_metrics.dynamic_sale GROUP BY t ORDER BY t)\n",
+          "rawQuery": "SELECT \n  t, \n  (SELECT count1 FROM (SELECT\n    (intDiv(toUInt32(timestamp), 1) * 1) * 1000 as t,\n    count() as count1 FROM analytics_metrics.dynamic_sale WHERE timestamp >= timestamp_sub(SECOND, 11, toDateTime(now())) AND timestamp <= timestamp_sub(SECOND, 10, toDateTime(now())) GROUP BY t ORDER BY t DESC) ORDER BY count1 DESC LIMIT 1 ) - count\nFROM (SELECT (intDiv(toUInt32(timestamp), 1) * 1) * 1000 as t, count() as count FROM analytics_metrics.dynamic_sale GROUP BY t ORDER BY t)",
+          "refId": "C",
           "round": "0s",
           "skip_comments": true,
           "table": "dynamic_sale",
@@ -523,8 +604,7 @@
           "fill": true,
           "line": true,
           "op": "lt",
-          "value": 5,
-          "visible": true
+          "value": 15
         }
       ],
       "timeFrom": null,
@@ -584,7 +664,7 @@
             "query": {
               "params": [
                 "A",
-                "5m",
+                "30s",
                 "now"
               ]
             },
@@ -596,8 +676,8 @@
           }
         ],
         "executionErrorState": "alerting",
-        "for": "5m",
-        "frequency": "1m",
+        "for": "10s",
+        "frequency": "30s",
         "handler": 1,
         "message": "Процент успешных платежей",
         "name": "Процент успешных платежей alert",
@@ -651,7 +731,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -675,8 +755,7 @@
           "fill": true,
           "line": true,
           "op": "lt",
-          "value": 0.9,
-          "visible": true
+          "value": 0.9
         }
       ],
       "timeFrom": null,
@@ -698,7 +777,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:195",
           "format": "percentunit",
           "label": null,
           "logBase": 1,
@@ -707,7 +785,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:196",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -760,7 +837,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -897,7 +974,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -920,8 +997,7 @@
           "fill": true,
           "line": true,
           "op": "lt",
-          "value": 0.9,
-          "visible": true
+          "value": 0.9
         }
       ],
       "timeFrom": null,
@@ -1002,7 +1078,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1061,114 +1137,13 @@
       }
     },
     {
-      "aliasColors": {
-        "url_time{instance=\"metrics-api:8080\", job=\"metrics-api\", service_id=\"10\", url=\"/bye\"}": "light-orange",
-        "url_time{instance=\"metrics-api:8080\", job=\"metrics-api\", service_id=\"10\", url=\"/hello\"}": "light-blue"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Prometheus",
-      "description": "Время обращения к URL",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 45
-      },
-      "hiddenSeries": false,
-      "id": 6,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.4.2",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "url_time{job=\"metrics-api\"}",
-          "interval": "",
-          "legendFormat": "",
-          "queryType": "randomWalk",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Время обращения к URL",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "ms",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
       "alert": {
         "alertRuleTags": {},
         "conditions": [
           {
             "evaluator": {
               "params": [
-                0.75
+                0.9
               ],
               "type": "lt"
             },
@@ -1221,7 +1196,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 51
+        "y": 45
       },
       "hiddenSeries": false,
       "id": 8,
@@ -1241,7 +1216,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1251,7 +1226,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "1-((sum_over_time(sla_time[5m]) - sum_over_time(url_time[5m])) / sum_over_time(sla_time[5m]))",
+          "expr": "clamp_max(sum_over_time(sla_time[1m]) / sum_over_time(url_time[1m]), 1)",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -1264,8 +1239,7 @@
           "fill": true,
           "line": true,
           "op": "lt",
-          "value": 0.75,
-          "visible": true
+          "value": 0.9
         }
       ],
       "timeFrom": null,
@@ -1309,14 +1283,19 @@
       }
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "url_time{instance=\"metrics-api:8080\", job=\"metrics-api\", service_id=\"10\", url=\"/bye\"}": "light-orange",
+        "url_time{instance=\"metrics-api:8080\", job=\"metrics-api\", service_id=\"10\", url=\"/hello\"}": "light-blue"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "description": "Время обращения к URL",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -1326,10 +1305,10 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 51
+        "y": 45
       },
       "hiddenSeries": false,
-      "id": 32,
+      "id": 6,
       "legend": {
         "avg": false,
         "current": false,
@@ -1346,7 +1325,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1356,18 +1335,24 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(sla_time - url_time < bool 0)",
+          "expr": "url_time{job=\"metrics-api\"}",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
           "refId": "A"
+        },
+        {
+          "expr": "sla_time{job=\"metrics-api\"}",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Количество неуспешных выgолнений SLA для времени ответа",
+      "title": "Время обращения к URL",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1383,7 +1368,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "ms",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -1411,7 +1396,7 @@
           {
             "evaluator": {
               "params": [
-                0.5
+                0.9
               ],
               "type": "lt"
             },
@@ -1466,7 +1451,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 59
+        "y": 53
       },
       "hiddenSeries": false,
       "id": 26,
@@ -1486,7 +1471,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1496,7 +1481,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "1-((sum_over_time(database_sla_time[5m]) - sum_over_time(database_time[5m])) / sum_over_time(database_time[5m]))",
+          "expr": "clamp_max(sum_over_time(database_sla_time[1m]) / sum_over_time(database_time[1m]), 1)",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -1509,8 +1494,7 @@
           "fill": true,
           "line": true,
           "op": "lt",
-          "value": 0.5,
-          "visible": true
+          "value": 0.9
         }
       ],
       "timeFrom": null,
@@ -1554,7 +1538,10 @@
       }
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "database_time{instance=\"metrics-api:8080\", job=\"metrics-api\", query=\"INSERT INTO products\", service_id=\"10\"}": "semi-dark-blue",
+        "database_time{instance=\"metrics-api:8080\", job=\"metrics-api\", query=\"SELECT * FROM products\", service_id=\"10\"}": "light-purple"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
@@ -1562,7 +1549,7 @@
       "fieldConfig": {
         "defaults": {
           "custom": {},
-          "displayName": "количество"
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -1572,10 +1559,10 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 59
+        "y": 53
       },
       "hiddenSeries": false,
-      "id": 34,
+      "id": 24,
       "legend": {
         "avg": false,
         "current": false,
@@ -1592,7 +1579,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1602,18 +1589,24 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(database_sla_time - database_time < bool 0)",
+          "expr": "database_time{job=\"metrics-api\"}",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
           "refId": "A"
+        },
+        {
+          "expr": "database_sla_time{job=\"metrics-api\"}",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Количество ошибок выполнения SLA обращения к базе данных",
+      "title": "Время обращения к базе данных.",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1629,7 +1622,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "ms",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -1710,7 +1703,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 67
+        "y": 61
       },
       "hiddenSeries": false,
       "id": 22,
@@ -1730,7 +1723,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1740,7 +1733,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (service_id, query)(rate(database_error_total{code=\"200\"}[5m]))/sum by (service_id, query)(rate(database_error_total[5m]))",
+          "expr": "sum by (service_id, query)(rate(database_error_total{code=\"200\"}[1m]))/sum by (service_id, query)(rate(database_error_total[1m]))",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -1753,8 +1746,7 @@
           "fill": true,
           "line": true,
           "op": "lt",
-          "value": 0.9,
-          "visible": true
+          "value": 0.9
         }
       ],
       "timeFrom": null,
@@ -1815,7 +1807,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 67
+        "y": 61
       },
       "hiddenSeries": false,
       "id": 36,
@@ -1835,7 +1827,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1845,7 +1837,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(database_error_total{code=\"500\"}[5m])",
+          "expr": "increase(database_error_total{code=\"500\"}[1m])",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -1894,106 +1886,41 @@
       }
     },
     {
-      "aliasColors": {
-        "database_time{instance=\"metrics-api:8080\", job=\"metrics-api\", query=\"INSERT INTO products\", service_id=\"10\"}": "semi-dark-blue",
-        "database_time{instance=\"metrics-api:8080\", job=\"metrics-api\", query=\"SELECT * FROM products\", service_id=\"10\"}": "light-purple"
+      "alert": {
+        "alertRuleTags": {},
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                80000000
+              ],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "max"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "5m",
+        "frequency": "5m",
+        "handler": 1,
+        "name": "Использование памяти alert",
+        "noDataState": "no_data",
+        "notifications": []
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 75
-      },
-      "hiddenSeries": false,
-      "id": 24,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.4.2",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "database_time{job=\"metrics-api\"}",
-          "interval": "",
-          "legendFormat": "",
-          "queryType": "randomWalk",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Время обращения к базе данных.",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "ms",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -2013,7 +1940,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 81
+        "y": 69
       },
       "hiddenSeries": false,
       "id": 18,
@@ -2033,7 +1960,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2043,14 +1970,22 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "jvm_memory_used_bytes{area=\"heap\"}",
+          "expr": "sum(jvm_memory_used_bytes{area=\"heap\"})",
           "interval": "",
           "legendFormat": "memory",
           "queryType": "randomWalk",
           "refId": "A"
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 80000000
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
@@ -2110,7 +2045,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 81
+        "y": 69
       },
       "hiddenSeries": false,
       "id": 20,
@@ -2130,7 +2065,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2197,7 +2132,7 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 27,
+  "schemaVersion": 26,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -2436,12 +2371,12 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Monitoring system dashboard",
   "uid": "EQbyAdLGz",
-  "version": 35
+  "version": 41
 }

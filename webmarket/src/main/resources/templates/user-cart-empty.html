@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/body.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+    </script>
+    <script th:src="@{/js/replaceURL.js}"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script th:src="@{/js/find_closest_object.js}"></script>
+    <title>User cart empty</title>
+</head>
+<body>
+<div th:include ="navbar :: navbar"></div>
+
+<h1><span th:text="#{empty_user_cart}"></span></h1>
+
+<div th:include ="navbar :: footer"></div>
+</body>
+</html>

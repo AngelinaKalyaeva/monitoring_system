@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/infocard.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/body.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+    </script>
+    <script th:src="@{/js/replaceURL.js}"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script th:src="@{/js/find_closest_object.js}"></script>
+    <title>Profile</title>
+</head>
+<body>
+<div th:include="navbar :: navbar"></div>
+<br/>
+<div class="content">
+    <div>
+        <h4 id="title-header" align="center">
+            <span th:text="#{user_profile}"></span>
+        </h4>
+        <h5 th:if="${user.getBlacklisted()}" class="alert" color="red">
+            <b><span th:text="#{banned}"></span></b>
+        </h5>
+        <div class="card-block">
+            <table>
+                <tbody>
+                <tr>
+                    <td class="index"><span th:text="#{name}"></span>:</td>
+                    <td class="value" th:text="${user.getName()}">id</td>
+                </tr>
+                <tr>
+                    <td class="index"><span th:text="#{email}"></span>:</td>
+                    <td class="value" th:text="${user.getEmail()}">email</td>
+                </tr>
+                <tr th:switch="${user.getGroupId()}">
+                    <td class="index"><span th:text="#{status}"></span>:</td>
+                    <td class="value" th:case="1">USER</td>
+                    <td class="value" th:case="2">ADMIN</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer" id="buttons-footer" align="right">
+            <button type="button" class="btn btn-secondary">
+                <a href="/profile/edit"><span th:text="#{edit}"></span></a>
+            </button>
+        </div>
+    </div>
+</div>
+<div th:include ="navbar :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/links.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/body.css}"/>
+    <title>Good bye page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+    </script>
+    <script th:src="@{/js/replaceURL.js}"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script th:src="@{/js/find_closest_object.js}"></script>
+</head>
+<body>
+<div th:include ="navbar :: navbar"></div>
+
+
+<div class="container-fluid text-center align">
+    <div class="row content">
+        <div class="col-sm-4 text-left form">
+
+            <form th:action="@{/login}" method="post">
+                <fieldset>
+                    <h2><span th:text="#{enter_log_pass}"></span></h2>
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger">
+                            <span th:text="#{incorrect_data}"></span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input id="username" type="text" class="form-control" name="username"
+                               placeholder="email" required="required" />
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <input id="password" type="password" class="form-control" name="password"
+                               placeholder="password" required="required"/>
+                    </div>
+                    <br/>
+                    <div>
+                        <button type="submit" class="btn btn-success"><span th:text="#{enter}"></span></button>
+
+                        <button type="button" class="btn btn-success"><a href="/forget"> <span th:text="#{forget_password}"></span></a></button>
+                    </div>
+                </fieldset>
+            </form>
+            <hr/>
+        </div>
+    </div>
+</div>
+</div>
+
+<div th:include ="navbar :: footer"></div>
+</body>
+</html>

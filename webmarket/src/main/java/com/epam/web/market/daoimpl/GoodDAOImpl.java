@@ -24,9 +24,10 @@ public class GoodDAOImpl implements GoodDAO {
     public List<Good> getAllGoods() {
         long start = System.currentTimeMillis();
         String sql = "SELECT `id`, `name`, `price`, `description`, `number` FROM `good`";
+        List<Good> query = this.jdbcTemplate.query(sql, rowMapper);
         metricsApiService.sendQueryErrorCount(sql);
         metricsApiService.sendSlaDatabaseTime(sql, System.currentTimeMillis() - start);
-        return this.jdbcTemplate.query(sql, rowMapper);
+        return query;
     }
 
     @Override

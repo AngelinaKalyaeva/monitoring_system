@@ -1,5 +1,6 @@
 package com.epam.web.market.controller;
 
+import com.epam.web.market.entity.OrderedGood;
 import com.epam.web.market.service.MetricsApiService;
 import com.epam.web.market.service.OrderService;
 import com.epam.web.market.service.UserService;
@@ -10,11 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import static com.epam.web.market.constant.PageNames.ORDER_PAGE_ADDRESS_NAME;
+import java.util.List;
 
 @PreAuthorize("hasRole('USER')")
 @Controller
+@ResponseBody
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
@@ -23,10 +26,9 @@ public class OrderController {
 
     @PreAuthorize("permitAll()")
     @GetMapping(value = "/orders")
-    public String showAllOrders(Model model) {
+    public List<OrderedGood> showAllOrders() {
         metricsApiService.sendUrlAttendenceMetric("/orders");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("orderedGoods", orderService.getOrderedGoodsForUser(userService.getByEmail(auth.getName())));
-        return ORDER_PAGE_ADDRESS_NAME;
+        return orderService.getOrderedGoodsForUser(userService.getByEmail(auth.getName()));
     }
 }

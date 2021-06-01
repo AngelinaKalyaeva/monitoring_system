@@ -1,4 +1,4 @@
-package com.epam.web.market.thymeleafform;
+package com.epam.web.market.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

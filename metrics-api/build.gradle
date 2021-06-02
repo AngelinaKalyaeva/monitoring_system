@@ -23,6 +23,7 @@ repositories {
 
 dependencies {
     //Common
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
 
@@ -61,5 +62,5 @@ task createDockerfile(type: Dockerfile) {
     defaultCommand '-jar', '/app/metrics-api.jar'
     exposePort 8080
     runCommand 'apk --update --no-cache add curl'
-    instruction 'HEALTHCHECK CMD curl -f http://localhost:8080/actuator/health || exit 1'
+    instruction 'HEALTHCHECK CMD curl -f https://localhost:8080/actuator/health || exit 1'
 }

@@ -11,7 +11,7 @@ import java.time.ZoneOffset;
 @Data
 @Component
 public class ClickhouseClient {
-    private final String CLICKHOUSE_BASE_URL = "http://clickhouse:8123?query=";
+    private final String CLICKHOUSE_BASE_URL = "https://clickhouse:8123?query=";
     private final RestTemplate restTemplate;
 
     private final String ATTENDANCE_METRICS_QUERY =
